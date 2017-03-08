@@ -1,0 +1,39 @@
+def VERSION = [
+        build: '1.0.0-SNAPSHOT',
+        java: 1.8,
+        jackson_databind: '2.8.6'
+]
+
+group 'com.pineone.icbms.so'
+version "${VERSION.build}"
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+jar {
+    baseName = 'so-test'
+    version = "${VERSION.build}"
+}
+
+sourceCompatibility = "${VERSION.java}"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //so
+    compile project(":so-util")
+    compile project(":so-serviceprocessor")
+
+    //log
+    compile "org.slf4j:slf4j-api:1.7.22"
+    compile "ch.qos.logback:logback-classic:1.1.9"
+
+    //json object mapper
+    compile "com.fasterxml.jackson.core:jackson-databind:${VERSION.jackson_databind}"
+
+    //test
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}

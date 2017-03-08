@@ -1,0 +1,29 @@
+def VERSION = [
+        build: '1.0.0-SNAPSHOT',
+        java: 1.8
+]
+
+group 'com.pineone.icbms.so'
+version "${VERSION.build}"
+
+apply plugin: 'base'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    group 'com.pineone.icbms.so'
+
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+

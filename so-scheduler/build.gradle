@@ -1,0 +1,57 @@
+def VERSION = [
+		build: '1.0.0-SNAPSHOT',
+		java: 1.8,
+		jackson_databind: '2.8.6'
+]
+
+group 'com.pineone.icbms.so'
+version "${VERSION.build}"
+
+buildscript {
+	ext {
+		springBootVersion = '1.5.1.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+	baseName = 'so-scheduler'
+	version = "${VERSION.build}"
+}
+
+sourceCompatibility = "${VERSION.java}"
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	//spring-boot
+	compile('org.springframework.boot:spring-boot-starter-aop')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	runtime('mysql:mysql-connector-java')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+	//scheduler
+	compile "opensymphony:quartz:1.6.3"
+
+	//logging
+	compile "org.slf4j:slf4j-api:1.7.22"
+	compile "ch.qos.logback:logback-classic:1.1.9"
+
+	//test
+	testCompile group: 'junit', name: 'junit', version: '4.11'
+}

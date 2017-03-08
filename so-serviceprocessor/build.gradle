@@ -1,0 +1,73 @@
+def VERSION = [
+        build: '1.0.0-SNAPSHOT',
+        java: 1.8,
+        jackson_databind: '2.8.6'
+]
+
+group 'com.pineone.icbms.so'
+version "${VERSION.build}"
+
+buildscript {
+    ext {
+        springBootVersion = '1.4.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'application'
+
+jar {
+    baseName = 'so-serviceprocessor'
+    version = "${VERSION.build}"
+
+    manifest {
+        attributes  'Title': 'Service Processor', 'Version': "${VERSION.build}", 'Main-Class': "com.pineone.icbms.so.processor.route.ProcessorRouter"
+    }
+    dependsOn configurations.runtime
+    from {
+        configurations.compile.collect {it.isDirectory()? it: zipTree(it)}
+    }
+}
+
+sourceCompatibility = "${VERSION.java}"
+targetCompatibility = "${VERSION.java}"
+
+repositories {
+    mavenCentral()
+}
+
+configurations.all {
+    exclude group: "org.slf4j", module: "slf4j-log4j12"
+    exclude group: "log4j", module: "log4j"
+}
+
+dependencies {
+    compile project(":so-virtualobject")
+    compile project(":so-if-db")
+    compile project(":so-devicecontrol")
+    compile project(":so-util")
+
+    //logging
+    compile "ch.qos.logback:logback-classic:1.1.9"
+    compile "org.slf4j:slf4j-api:1.7.22"
+
+    //kafka
+    //compile "org.apache.kafka:kafka_2.11:0.10.1.0"
+    compile "org.apache.kafka:kafka-clients:0.10.1.0"
+    compile "org.apache.kafka:kafka-streams:0.10.1.0"
+
+    //json object mapper
+    compile "com.fasterxml.jackson.core:jackson-databind:${VERSION.jackson_databind}"
+
+    //test
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
