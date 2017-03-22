@@ -161,3 +161,13 @@
 .idea/libraries/Gradle__xml_apis_xml_apis_1_4_01.xml
 */build
 *.imi
+*/libraries
+.idea/
+.gradle
+/gradle
+*.iml
+target
+gradlew
+gradlew.bat
+*/build
+*/log
