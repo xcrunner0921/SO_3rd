@@ -160,3 +160,4 @@
 .idea/libraries/Gradle__org_yaml_snakeyaml_1_17.xml
 .idea/libraries/Gradle__xml_apis_xml_apis_1_4_01.xml
 */build
+*.imi
