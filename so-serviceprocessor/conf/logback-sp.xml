@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <property name="LOG_PATH" value="/Volumes/DATA/Users/uni4love/project/workspace/pineone/serviceorchestration/so/src/so/logs"/>
+    <property name="LOG_FILE_PREFIX" value="so-sp"/>
+    <!-- log file name -->
+    <property name="LOG_FILE_NAME_DEFAULT" value="${LOG_FILE_PREFIX}" />
+    <property name="LOG_FILE_NAME_PROCESSOR_CONTEXT" value="${LOG_FILE_PREFIX}_context" />
+    <property name="LOG_FILE_NAME_PROCESSOR_ORCHESTRATIONSERVICE" value="${LOG_FILE_PREFIX}_os" />
+    <property name="LOG_FILE_NAME_PROCESSOR_VIRTUALOBJECT" value="${LOG_FILE_PREFIX}_vo" />
+    <property name="LOG_FILE_NAME_PROCESSOR_DEVICECONTROL" value="${LOG_FILE_PREFIX}_dc" />
+    <!-- log file path -->
+    <property name="LOG_FILE_PATH_DEFAULT" value="${LOG_PATH}/${LOG_FILE_NAME_DEFAULT}" />
+    <property name="LOG_FILE_PATH_PROCESSOR_CONTEXT" value="${LOG_PATH}/${LOG_FILE_NAME_PROCESSOR_CONTEXT}" />
+    <property name="LOG_FILE_PATH_PROCESSOR_ORCHESTRATIONSERVICE" value="${LOG_PATH}/${LOG_FILE_NAME_PROCESSOR_ORCHESTRATIONSERVICE}" />
+    <property name="LOG_FILE_PATH_PROCESSOR_VIRTUALOBJECT" value="${LOG_PATH}/${LOG_FILE_NAME_PROCESSOR_VIRTUALOBJECT}" />
+    <property name="LOG_FILE_PATH_PROCESSOR_DEVICECONTROL" value="${LOG_PATH}/${LOG_FILE_NAME_PROCESSOR_DEVICECONTROL}" />
+    <!-- log level -->
+    <property name="LOG_LEVEL_DEFAULT" value="DEBUG"/>
+    <!-- log pattern -->
+    <property name="ENCODER_PATTERN_STDOUT" value="%d %-4relative [%thread] %-5level %logger{36} - %msg%n"/>
+    <property name="ENCODER_PATTERN_FILE" value="${ENCODER_PATTERN_STDOUT}"/>
+    <property name="ENCODER_PATTERN_ROLLING_FILE" value="${ENCODER_PATTERN_STDOUT}"/>
+
+    <!-- appender -->
+
+    <!-- CONSOLE OUTPUT -->
+    <appender name="STDOUT_DEFAULT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <Pattern>%d %-4relative [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- Insert the current time formatted as "yyyyMMdd'T'HHmmss" under
+         the key "bySecond" into the logger context. This value will be
+         available to all subsequent configuration elements. -->
+    <timestamp key="byDay" datePattern="yyyy-MM-dd"/>
+    <!-- default log file -->
+    <appender name="FILE_DEFAULT" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_FILE_PATH_DEFAULT}_${byDay}.log</file>
+        <append>true</append>
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>${ENCODER_PATTERN_FILE}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- default rolling log file -->
+    <appender name="FILE_ROLLING_DEFAULT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH_DEFAULT}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_FILE_NAME_DEFAULT}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 100MB -->
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${ENCODER_PATTERN_ROLLING_FILE}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- processor: context -->
+    <appender name="FILE_ROLLING_PROCESSOR_CONTEXT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH_PROCESSOR_CONTEXT}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_FILE_NAME_CONTEXT}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 100MB -->
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${ENCODER_PATTERN_ROLLING_FILE}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- processor: orchestration service -->
+    <appender name="FILE_ROLLING_PROCESSOR_ORCHESTRATIONSERVICE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH_PROCESSOR_ORCHESTRATIONSERVICE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_FILE_NAME_ORCHESTRATIONSERVICE}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 100MB -->
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${ENCODER_PATTERN_ROLLING_FILE}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- processor: virtual object -->
+    <appender name="FILE_ROLLING_PROCESSOR_VIRTUALOBJECT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH_PROCESSOR_VIRTUALOBJECT}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_FILE_NAME_VIRTUALOBJECT}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 100MB -->
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${ENCODER_PATTERN_ROLLING_FILE}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- processor: device control -->
+    <appender name="FILE_ROLLING_PROCESSOR_DEVICECONTROL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH_PROCESSOR_DEVICECONTROL}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_FILE_NAME_DEVICECONTROL}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 100MB -->
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${ENCODER_PATTERN_ROLLING_FILE}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- spring profile: product -->
+    <springProfile name="product">
+        <logger name="com.pineone.icbms.so.processor.context" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_PROCESSOR_CONTEXT"/>
+        </logger>
+        <logger name="com.pineone.icbms.so.processor.orchestrationservice" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_PROCESSOR_ORCHESTRATIONSERVICE"/>
+        </logger>
+        <logger name="com.pineone.icbms.so.processor.virtualobject" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_PROCESSOR_VIRTUALOBJECT"/>
+        </logger>
+        <logger name="com.pineone.icbms.so.processor.devicecontrol" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_PROCESSOR_DEVICECONTROL"/>
+        </logger>
+
+        <logger name="com.pineone.icbms.so" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_DEFAULT"/>
+        </logger>
+
+        <logger name="org.hibernate.type.descriptor.sql" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_DEFAULT"/>
+        </logger>
+
+        <root level="INFO">
+            <!--
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            -->
+            <appender-ref ref="FILE_ROLLING_DEFAULT"/>
+        </root>
+    </springProfile>
+
+    <!-- spring profile: not product -->
+    <springProfile name="!product">
+        <logger name="com.pineone.icbms.so.processor.context" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_CONTEXT"/>
+        </logger>
+        <logger name="com.pineone.icbms.so.processor.orchestrationservice" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_ORCHESTRATIONSERVICE"/>
+        </logger>
+        <logger name="com.pineone.icbms.so.processor.virtualobject" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_VIRTUALOBJECT"/>
+        </logger>
+        <logger name="com.pineone.icbms.so.processor.devicecontrol" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_DEVICECONTROL"/>
+        </logger>
+
+        <logger name="com.pineone.icbms.so" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_DEFAULT"/>
+        </logger>
+
+        <logger name="org.hibernate.type.descriptor.sql" level="${LOG_LEVEL}">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+            <appender-ref ref="FILE_ROLLING_DEFAULT"/>
+        </logger>
+        <root level="INFO">
+            <appender-ref ref="STDOUT_DEFAULT"/>
+        </root>
+    </springProfile>
+
+    <!--
+    <logger name="com.pineone.icbms.so" level="${LOG_LEVEL}">
+        <appender-ref ref="FILE_ROLLING_DEFAULT" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT_DEFAULT" />
+    </root>
+    -->
+</configuration>

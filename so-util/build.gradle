@@ -20,6 +20,7 @@ sourceCompatibility = "${VERSION.java}"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {

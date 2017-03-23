@@ -2,15 +2,19 @@ package com.pineone.icbms.so.processor.route;
 
 import com.pineone.icbms.so.processor.context.ContextModelProcessor;
 import com.pineone.icbms.so.processor.devicecontrol.DeviceControlProcessor;
+import com.pineone.icbms.so.processor.interfaces.processor.AGenericProcessor;
 import com.pineone.icbms.so.processor.interfaces.processor.IGenericProcessor;
 import com.pineone.icbms.so.processor.orchestrationservice.OrchestrationServiceProcessor;
 import com.pineone.icbms.so.processor.virtualobject.VirtualObjectProcessor;
 import com.pineone.icbms.so.util.id.IdUtils;
+import com.withwiz.plankton.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -144,7 +148,7 @@ public final class ProcessorRouter {
      * print USAGE.<BR/>
      */
     public static void printUsage() {
-        StringBuilder sb = new StringBuilder("# Usage) java -jar so-serviceprocessor.jar [processor name]\n");
+        StringBuilder sb = new StringBuilder("# Usage) java -jar so-serviceprocessor.jar -P[processor1,processor2,..]\n");
         sb.append("\n= current processor name list:\n");
         for (Class cls : processorList) {
             sb.append("+- " + cls.getName() + "\n");
@@ -153,24 +157,69 @@ public final class ProcessorRouter {
     }
 
     /**
-     * @param args
+     * run processors.<BR/>
+     *
+     * @param args runnable processor name
      */
     public void run(String[] args) {
-        if (args.length != 1) {
+        log.info("user.dir: {}", System.getProperty("user.dir"));
+        log.debug("arguments[{}]: {}", args.length, Arrays.stream(args).toArray());
+        // processor name list from arguments
+        ArrayList<String> processorNameListFromArguments = getProcessorNameListFromArguments(args);
+        //
+        if (processorNameListFromArguments == null || !checkExistProcessorNameList(processorNameListFromArguments)) {
             //usage
             ProcessorRouter.printUsage();
         } else {
-            log.info("Your processor is {}.", args[0]);
             ProcessorRouter processRouter = ProcessorRouter.getInstance();
-            //가능한 process 유무 확인
-            if (processRouter.existProcess(args[0])) {
-                IGenericProcessor processor = processRouter.getProcessor(args[0]);
-                processor.process();
-            } else {
-                ProcessorRouter.printUsage();
+            for (String processorName : processorNameListFromArguments) {
+                AGenericProcessor processor = (AGenericProcessor)processRouter.getProcessor(processorName);
+                new Thread(processor).start();
             }
         }
     }
+
+    /**
+     * run parameter("processor class name") list.<BR/>
+     *
+     * @param processorNameList processor name list
+     * @return result after checking
+     */
+    private boolean checkExistProcessorNameList(ArrayList<String> processorNameList) {
+        //check processor class
+        ProcessorRouter processRouter = ProcessorRouter.getInstance();
+        for (String processorName : processorNameList) {
+            log.info("Your processor name: {}", processorName);
+            if (!processRouter.existProcess(processorName)) {
+                log.error("Your processor NOT exist: {}", processorName);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * return processor name list from arguments.<BR/>
+     *
+     * @param args arguments
+     * @return processor name list
+     */
+    private ArrayList<String> getProcessorNameListFromArguments(String[] args) {
+        ArrayList<String> processorNameList = null;
+        for(String arg: args) {
+            if (arg.startsWith("-P")) {
+                if(processorNameList == null)
+                    processorNameList = new ArrayList<>();
+                String filteredArgs = StringUtil.getRight(arg, "-P");
+                log.debug("filteredArgs: {}", filteredArgs);
+                String[] processorArray = filteredArgs.split(",");
+                processorNameList.addAll(Arrays.asList(processorArray));
+                log.debug("current processorList: {}", processorNameList);
+            }
+        }
+        return processorNameList;
+    }
+
 
     /**
      * runner test main method.<BR/>

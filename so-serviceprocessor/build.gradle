@@ -9,7 +9,7 @@ version "${VERSION.build}"
 
 buildscript {
     ext {
-        springBootVersion = '1.4.3.RELEASE'
+        springBootVersion = '1.5.1.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -23,7 +23,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'application'
+//apply plugin: 'application'
 
 jar {
     baseName = 'so-serviceprocessor'
@@ -39,20 +39,22 @@ jar {
 }
 
 sourceCompatibility = "${VERSION.java}"
-targetCompatibility = "${VERSION.java}"
 
 repositories {
+    jcenter()
     mavenCentral()
 }
 
 configurations.all {
     exclude group: "org.slf4j", module: "slf4j-log4j12"
+    exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     exclude group: "log4j", module: "log4j"
 }
 
 dependencies {
     compile project(":so-virtualobject")
     compile project(":so-if-db")
+    compile project(":so-if-sda")
     compile project(":so-devicecontrol")
     compile project(":so-util")
 
@@ -67,6 +69,9 @@ dependencies {
 
     //json object mapper
     compile "com.fasterxml.jackson.core:jackson-databind:${VERSION.jackson_databind}"
+
+    //withwiz
+    compile "com.withwiz:plankton:0.1.3"
 
     //test
     testCompile group: 'junit', name: 'junit', version: '4.11'

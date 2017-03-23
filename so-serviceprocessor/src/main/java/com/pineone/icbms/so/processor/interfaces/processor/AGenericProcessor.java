@@ -7,7 +7,7 @@ import com.pineone.icbms.so.virtualobject.common.AGenericIdNameOwner;
  *
  * Created by uni4love on 2016. 11. 24..
  */
-abstract public class AGenericProcessor extends AGenericIdNameOwner implements IGenericProcessor {
+abstract public class AGenericProcessor extends AGenericIdNameOwner implements IGenericProcessor, Runnable {
 
     /**
      * constructor
@@ -23,5 +23,10 @@ abstract public class AGenericProcessor extends AGenericIdNameOwner implements I
      */
     public AGenericProcessor(String id, String name) {
         super(id, name);
+    }
+
+    @Override
+    public void run() {
+        process();
     }
 }

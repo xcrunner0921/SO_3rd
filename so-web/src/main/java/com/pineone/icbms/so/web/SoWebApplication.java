@@ -32,6 +32,7 @@ public class SoWebApplication /* extends SpringBootServletInitializer //for exte
      * @param args arguments
      */
     public static void main(String[] args) {
+        System.out.println("user.dir: " + System.getProperty("user.dir"));
 //		SpringApplication.run(SoProcessorApplication.class, args);
         CustomBeanNameGenerator beanNameGenerator = new CustomBeanNameGenerator();
         new SpringApplicationBuilder(SoWebApplication.class)

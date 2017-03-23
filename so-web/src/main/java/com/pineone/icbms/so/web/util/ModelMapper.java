@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 
 /**
  * Model mapper utility class.<BR/>
- *
+ * <p>
  * Created by uni4love on 2016. 12. 26..
  */
 public class ModelMapper {
@@ -21,10 +21,12 @@ public class ModelMapper {
     public static ContextModelForMQ ContextModelForIf2ContextModelForMQ(ContextModelForIf contextModelForIf) {
         ContextModelForMQ cmForMQ = new ContextModelForMQ(contextModelForIf.getId(), contextModelForIf.getName());
         ContextInformationForMQ ciForMQ = null;
-        for(ContextInformationForIf ci: contextModelForIf.getContextInformationList()) {
-            ciForMQ = new ContextInformationForMQ(ci.getId(), ci.getName());
-            ciForMQ.setUri(ci.getUri());
-            cmForMQ.addContextInformation(ciForMQ);
+        if (contextModelForIf.getContextInformationList() != null) {
+            for (ContextInformationForIf ci : contextModelForIf.getContextInformationList()) {
+                ciForMQ = new ContextInformationForMQ(ci.getId(), ci.getName());
+                ciForMQ.setUri(ci.getUri());
+                cmForMQ.addContextInformation(ciForMQ);
+            }
         }
         //timestamp
         cmForMQ.setCreatedDate(new Timestamp(System.currentTimeMillis()));

@@ -37,4 +37,9 @@ public class Settings {
      */
     public static final String TOPIC_DEVICE_CONTROL = "devicecontrol";
 
+    /**
+     * class path for class loader
+     */
+    public static final String DEVICE_DRIVER_PATH = "/";
+
 }

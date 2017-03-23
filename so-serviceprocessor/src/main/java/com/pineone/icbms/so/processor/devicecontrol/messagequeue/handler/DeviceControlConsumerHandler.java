@@ -1,13 +1,16 @@
 package com.pineone.icbms.so.processor.devicecontrol.messagequeue.handler;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.pineone.icbms.so.processor.devicecontrol.messagequeue.model.VirtualDeviceForMQ;
 import com.pineone.icbms.so.processor.messagequeue.handler.AGenericConsumerHandler;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 
+import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * DeviceControl Consumer handler.<BR/>
@@ -59,17 +62,22 @@ public class DeviceControlConsumerHandler extends AGenericConsumerHandler {
      */
     @Override
     public void handle(ConsumerRecords<String, String> records) {
+        ObjectMapper objectMapper = null;
         for (ConsumerRecord<String, String> record : records) {
-            Map<String, Object> data = new HashMap<>();
-            data.put("partition", record.partition());
-            data.put("offset", record.offset());
-            data.put("key", record.key());
-            data.put("value", record.value());
-            System.out.println(this.id + ": " + data);
-
-            //get DeviceDriver from database by devicemapper id
-            //load devicemapper driver
-            //run devicemapper execute method
+            log.debug("ConsumerRecord: {}: {}");
+            //object mapper
+            if (objectMapper == null) {
+                objectMapper = new ObjectMapper().configure(SerializationFeature.INDENT_OUTPUT, true).setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            }
+            //deserialize to mq obj.
+            String receivedModelString = record.value();
+            try {
+                VirtualDeviceForMQ virtualDeviceForMQ = objectMapper.readValue(receivedModelString, VirtualDeviceForMQ.class);
+                //mq obj handle
+                new DeviceControlHandler().handle(virtualDeviceForMQ);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
