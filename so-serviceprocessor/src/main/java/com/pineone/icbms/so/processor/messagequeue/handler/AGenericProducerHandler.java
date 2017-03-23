@@ -32,7 +32,7 @@ abstract public class AGenericProducerHandler extends AProducerHandler<Future<Re
     public Map getPropertiesMap() {
         Map<String, Object> keyValueMap = new HashMap<String, Object>();
         keyValueMap.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, Settings.BROKER_LIST);
-        keyValueMap.put(ProducerConfig.ACKS_CONFIG, "all");
+        keyValueMap.put(ProducerConfig.ACKS_CONFIG, "1");
         keyValueMap.put(ProducerConfig.RETRIES_CONFIG, 0);
         keyValueMap.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         keyValueMap.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());

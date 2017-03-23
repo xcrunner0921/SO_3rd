@@ -33,7 +33,8 @@ public final class DatabaseManager implements IDatabaseManager {
      * @return singleton instance
      */
     public static DatabaseManager getInstance() {
-        return SingletonHolder.singleton;
+//        return SingletonHolder.singleton;
+        return new DatabaseManager();
     }
 
     @Override

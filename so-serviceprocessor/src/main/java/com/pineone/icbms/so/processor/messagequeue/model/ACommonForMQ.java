@@ -1,5 +1,7 @@
 package com.pineone.icbms.so.processor.messagequeue.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.pineone.icbms.so.state.DefaultState;
 import com.pineone.icbms.so.virtualobject.common.AGenericIdNameOwner;
 
 import java.sql.Timestamp;
@@ -18,7 +20,26 @@ abstract public class ACommonForMQ extends AGenericIdNameOwner {
     /**
      * message expire date
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     Timestamp expireDate;
+
+    /**
+     * priority
+     */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    int priority;
+
+    /**
+     * state
+     */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    protected DefaultState<String> state;
+
+    /**
+     * constructor
+     */
+    public ACommonForMQ() {
+    }
 
     /**
      * constructor
@@ -43,9 +64,28 @@ abstract public class ACommonForMQ extends AGenericIdNameOwner {
         this.expireDate = expireDate;
     }
 
+    public DefaultState getState() {
+        return state;
+    }
+
+    public void setState(DefaultState<String> state) {
+        this.state = state;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
+        if(state != null)
+            sb.append("state: ").append(state);
         if (createdDate != null)
             sb.append("createdDate = ").append(createdDate);
         if (expireDate != null)

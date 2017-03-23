@@ -1,5 +1,6 @@
 package com.pineone.icbms.so.web.interfaces.api.context.controller;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -36,24 +37,26 @@ public class ContextModelController {
     @RequestMapping(value = "/cm", method = RequestMethod.POST)
     public String injectContextModel(@RequestBody ContextModelForIf contextModelForIf) {
         log.debug("ContextModelForMQ: {}", contextModelForIf);
-        //implements...
-        // create message From ContextModelForMQ for messageQueue
-        // publish to message queue
+        // create message From ContextModelForMQ for messageQueue, publish to message queue
         // ContextModelForIf --> ContextModelForMQ
         ContextModelForMQ cmForMQ = ModelMapper.ContextModelForIf2ContextModelForMQ(contextModelForIf);
         //object to json
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+        ObjectMapper objectMapper = new ObjectMapper().configure(SerializationFeature.INDENT_OUTPUT, true).setSerializationInclusion(JsonInclude.Include.NON_NULL);
         String modelString = null;
+        ContextModelProducerHandler producerHandler = null;
         try {
             modelString = objectMapper.writeValueAsString(cmForMQ);
-            log.warn("event:ContextModelForDB {}", modelString);
+            log.warn("event:ContextModelForMQ {}", modelString);
             //context model producer handler
-            ContextModelProducerHandler producerHandler = new ContextModelProducerHandler(0);
+            producerHandler = new ContextModelProducerHandler(0);
             producerHandler.send(modelString);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+        } finally {
+            if(producerHandler != null)
+                producerHandler.close();
         }
+
         //추후 처리 결과를 정의하여 리턴함.
         return modelString;
     }

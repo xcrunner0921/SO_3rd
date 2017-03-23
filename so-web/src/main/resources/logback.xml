@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration scan="true" scanPeriod="30 seconds">
     <property name="LOG_PATH" value="../logs" />
     <property name="LOG_FILE_PREFIX" value="so-web" />
     <property name="LOG_LEVEL" value="DEBUG" />

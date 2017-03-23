@@ -1,7 +1,8 @@
 package com.pineone.icbms.so.processor.orchestrationservice.messagequeue.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.pineone.icbms.so.processor.messagequeue.model.ACommonForMQ;
-import com.pineone.icbms.so.state.DefaultState;
 import com.pineone.icbms.so.util.collection.CollectionUtils;
 import com.pineone.icbms.so.virtualobject.DefaultVirtualObject;
 import com.pineone.icbms.so.virtualobject.IGenericVirtualObject;
@@ -14,30 +15,36 @@ import java.util.List;
 
 /**
  * OrchestrationService model for MQ.<BR/>
- * <p>
+ *
  * Created by uni4love on 2017. 1. 5..
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(value= JsonInclude.Include.NON_ABSENT, content= JsonInclude.Include.NON_EMPTY)
 public class OrchestrationServiceForMQ extends ACommonForMQ {
 
     /**
      * orchestration service list
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     protected List<DefaultOrchestrationService> orchestrationServiceList;
 
     /**
      * composite virtual object list
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     protected List<DefaultCompositeVirtualObject> compositeVirtualObjectList;
 
     /**
      * virtual object list
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     protected List<DefaultVirtualObject> virtualObjectList;
 
     /**
-     * state
+     * constructor
      */
-    protected DefaultState state;
+    public OrchestrationServiceForMQ() {
+    }
 
     /**
      * constructor<BR/>
@@ -76,24 +83,15 @@ public class OrchestrationServiceForMQ extends ACommonForMQ {
         this.virtualObjectList = virtualObjectList;
     }
 
-    public DefaultState getState() {
-        return state;
-    }
-
-    public void setState(DefaultState state) {
-        this.state = state;
-    }
-
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("[id = ").append(id);
         sb.append(", name = ").append(name);
         for (DefaultOrchestrationService os : orchestrationServiceList) {
-            sb.append(",\ncontextinformation: ").append(os);
+            sb.append(",\nos: ").append(os);
         }
 //        sb.append(",\nvirtualobject: ").append(virtualObject);
-        sb.append(",\nstate: ").append(state);
         sb.append("]");
         return sb.toString();
     }

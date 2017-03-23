@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration scan="true" scanPeriod="30 seconds">
     <property name="LOG_PATH" value="../logs" />
     <property name="LOG_FILE_PREFIX" value="so-sp" />
-    <property name="LOG_LEVEL" value="DEBUG" />
+    <property name="LOG_LEVEL_SO" value="DEBUG" />
+    <property name="LOG_LEVEL_DATABASE" value="DEBUG" />
+    <property name="LOG_LEVEL_SPRING" value="INFO" />
     <property name="ENCODER_PATTERN_STDOUT" value="%d %-4relative [%thread] %-5level %logger{36} - %msg%n" />
     <property name="ENCODER_PATTERN_FILE" value="${ENCODER_PATTERN_STDOUT}" />
     <property name="ENCODER_PATTERN_ROLLING_FILE" value="${ENCODER_PATTERN_STDOUT}" />
@@ -15,6 +17,7 @@
         </encoder>
     </appender>
 
+    <!-- FILE OUTPUT -->
     <!-- Insert the current time formatted as "yyyyMMdd'T'HHmmss" under
          the key "bySecond" into the logger context. This value will be
          available to all subsequent configuration elements. -->
@@ -29,11 +32,12 @@
         </encoder>
     </appender>
 
+    <!-- FILE ROLLING OUTPUT -->
     <appender name="FILE_ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH}/${LOG_FILE_PREFIX}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>${LOG_FILE_PREFIX}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_FILE_PREFIX}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- or whenever the file size reaches 100MB -->
@@ -45,7 +49,12 @@
         </encoder>
     </appender>
 
-    <logger name="com.pineone.icbms.so" level="${LOG_LEVEL}"/>
+    <!-- package: com.pineone.icbms.so.* -->
+    <logger name="com.pineone.icbms.so" level="${LOG_LEVEL_SO}"/>
+    <!-- package: org.springframework.* -->
+    <logger name="org.springframework" level="${LOG_LEVEL_SPRING}"/>
+    <!-- package: org.hibernate.* -->
+    <logger name="org.hibernate" level="${LOG_LEVEL_DATABASE}"/>
     <root level="DEBUG">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE_ROLLING" />

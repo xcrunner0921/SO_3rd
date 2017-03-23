@@ -50,9 +50,7 @@ abstract public class AGenericConsumerHandler extends AConsumerHandler<String, S
             }
         } catch (WakeupException e) {
             e.printStackTrace();
-        } finally {
-            close();
-            log.info("The handler:{} closed.", id);
         }
+        log.debug("The handler:{} thread ended.", id);
     }
 }
