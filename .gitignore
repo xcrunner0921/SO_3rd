@@ -159,3 +159,15 @@
 .idea/libraries/Gradle__org_xerial_snappy_snappy_java_1_1_2_6.xml
 .idea/libraries/Gradle__org_yaml_snakeyaml_1_17.xml
 .idea/libraries/Gradle__xml_apis_xml_apis_1_4_01.xml
+*/build
+*.imi
+*/libraries
+.idea/
+.gradle
+/gradle
+*.iml
+target
+gradlew
+gradlew.bat
+*/build
+*/log
