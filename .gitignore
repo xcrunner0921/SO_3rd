@@ -171,3 +171,5 @@ gradlew
 gradlew.bat
 */build
 */log
+*.ucls
+*.png
